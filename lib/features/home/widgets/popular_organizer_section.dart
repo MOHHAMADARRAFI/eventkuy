@@ -1,11 +1,11 @@
 // lib/features/home/widgets/popular_organizer_section.dart
 
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../data/models/organizer_model.dart';
-import '../../../shared/widgets/organizer_card.dart';
-import '../../../shared/widgets/section_header.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/data/models/organizer_model.dart';
+import 'package:eventkuy/shared/widgets/organizer_card.dart';
+import 'package:eventkuy/shared/widgets/section_header.dart';
 
 class PopularOrganizerSection extends StatelessWidget {
   final List<OrganizerModel> organizers;

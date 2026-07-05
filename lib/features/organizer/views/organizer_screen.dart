@@ -4,15 +4,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../features/bookmark/viewmodels/bookmark_viewmodel.dart';
-import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/empty_state_widget.dart';
-import '../../../shared/widgets/event_card.dart';
-import '../../../shared/widgets/shimmer_loader.dart';
-import '../viewmodels/organizer_viewmodel.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/features/bookmark/viewmodels/bookmark_viewmodel.dart';
+import 'package:eventkuy/shared/widgets/app_button.dart';
+import 'package:eventkuy/shared/widgets/empty_state_widget.dart';
+import 'package:eventkuy/shared/widgets/event_card.dart';
+import 'package:eventkuy/shared/widgets/shimmer_loader.dart';
+import 'package:eventkuy/features/organizer/viewmodels/organizer_viewmodel.dart';
 
 class OrganizerScreen extends StatefulWidget {
   final String organizerId;

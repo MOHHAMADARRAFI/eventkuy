@@ -12,6 +12,9 @@ import 'data/repositories/bookmark_repository.dart';
 import 'data/repositories/event_repository.dart';
 import 'data/repositories/notification_repository.dart';
 import 'data/repositories/user_repository.dart';
+import 'data/repositories/ticket_repository.dart';
+import 'data/repositories/payment_repository.dart';
+import 'data/repositories/audit_repository.dart';
 import 'features/auth/viewmodels/auth_viewmodel.dart';
 import 'features/bookmark/viewmodels/bookmark_viewmodel.dart';
 import 'features/explore/viewmodels/explore_viewmodel.dart';
@@ -72,6 +75,15 @@ class EventKuyApp extends StatelessWidget {
         ),
         Provider<UserRepository>(
           create: (_) => UserRepository(),
+        ),
+        Provider<ITicketRepository>(
+          create: (_) => TicketRepository(),
+        ),
+        Provider<IPaymentRepository>(
+          create: (_) => PaymentRepository(),
+        ),
+        Provider<IAuditRepository>(
+          create: (_) => AuditRepository(),
         ),
 
         // ── ViewModels ────────────────────────────

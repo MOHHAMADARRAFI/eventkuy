@@ -1,10 +1,10 @@
 // lib/features/home/widgets/category_list.dart
 
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../data/models/category_model.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/data/models/category_model.dart';
 
 class CategoryList extends StatelessWidget {
   final List<CategoryModel> categories;

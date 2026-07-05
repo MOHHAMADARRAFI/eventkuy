@@ -5,19 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../core/utils/extensions.dart';
-import '../../../data/models/event_model.dart';
-import '../../../features/auth/viewmodels/auth_viewmodel.dart';
-import '../../../features/bookmark/viewmodels/bookmark_viewmodel.dart';
-import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/app_dialog.dart';
-import '../../../shared/widgets/empty_state_widget.dart';
-import '../viewmodels/event_detail_viewmodel.dart';
-import '../../payment/presentation/pages/payment_selection_screen.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/core/utils/extensions.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
+import 'package:eventkuy/features/bookmark/viewmodels/bookmark_viewmodel.dart';
+import 'package:eventkuy/shared/widgets/app_button.dart';
+import 'package:eventkuy/shared/widgets/app_dialog.dart';
+import 'package:eventkuy/shared/widgets/empty_state_widget.dart';
+import 'package:eventkuy/features/event_detail/viewmodels/event_detail_viewmodel.dart';
+import 'package:eventkuy/features/payment/presentation/pages/payment_selection_screen.dart';
+import 'package:eventkuy/data/repositories/ticket_repository.dart';
+import 'package:eventkuy/data/models/ticket_model.dart';
+import 'package:intl/intl.dart';
 
 class EventDetailScreen extends StatefulWidget {
   final String eventId;
@@ -58,17 +61,60 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     final event = context.read<EventDetailViewModel>().event;
     if (event == null) return;
 
+    final ticketRepo = context.read<ITicketRepository>();
+    final ticketsList = await ticketRepo.getTickets(event.id);
+
+    final tickets = ticketsList.isNotEmpty
+        ? ticketsList
+        : [
+            TicketModel(
+              id: 'tck_default',
+              eventId: event.id,
+              ticketName: 'Regular Ticket',
+              description: 'Tiket masuk umum.',
+              price: event.price ?? 0,
+              quota: event.quota,
+              remainingQuota: event.quota - event.registered,
+              soldQuantity: event.registered,
+              registrationStart: DateTime.now(),
+              registrationEnd: event.startDate,
+              benefits: event.benefits,
+              isActive: true,
+              maxPurchasePerUser: 4,
+              colorLabel: 'blue',
+              sortOrder: 1,
+            )
+          ];
+
+    if (!mounted) return;
+
+    final selectedTicket = await showModalBottomSheet<Map<String, dynamic>>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return _TicketSelectionSheet(
+          tickets: tickets,
+          isDark: Theme.of(context).brightness == Brightness.dark,
+        );
+      },
+    );
+
+    if (selectedTicket == null || !mounted) return;
+
+    final TicketModel ticket = selectedTicket['ticket'] as TicketModel;
+    final int qty = selectedTicket['quantity'] as int;
+
     final confirmed = await showConfirmDialog(
       context,
-      title: AppStrings.registerConfirmTitle,
-      message: 'Anda akan dialihkan ke halaman pembayaran untuk menyelesaikan pendaftaran.',
+      title: 'Checkout Tiket',
+      message: 'Anda akan membeli ${qty}x ${ticket.ticketName} senilai ${NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0).format(ticket.price * qty)}. Lanjut ke pembayaran?',
       confirmLabel: 'Lanjut',
-      icon: Icons.payment_rounded,
+      icon: Icons.shopping_cart_checkout_rounded,
     );
 
     if (confirmed != true || !mounted) return;
 
-    // Navigasi ke halaman pemilihan pembayaran dan tunggu hasilnya
     final paymentSuccess = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -82,12 +128,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
 
       if (!mounted) return;
       if (success) {
-        // Tampilkan pesan sukses
         context.showSnack(
           'Pembayaran berhasil! Tiket ditambahkan ke Event Saya.',
           backgroundColor: AppColors.success,
         );
-        // Arahkan ke tab Event Saya (route /my-event)
         context.go('/my-event');
       } else {
         context.showErrorSnack('Pendaftaran gagal. Coba lagi.');
@@ -720,6 +764,158 @@ class _OrganizerRow extends StatelessWidget {
                 color: AppColors.textTertiary),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _TicketSelectionSheet extends StatefulWidget {
+  final List<TicketModel> tickets;
+  final bool isDark;
+
+  const _TicketSelectionSheet({required this.tickets, required this.isDark});
+
+  @override
+  State<_TicketSelectionSheet> createState() => _TicketSelectionSheetState();
+}
+
+class _TicketSelectionSheetState extends State<_TicketSelectionSheet> {
+  TicketModel? _selectedTicket;
+  int _qty = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.tickets.isNotEmpty) {
+      _selectedTicket = widget.tickets.first;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final curFormat = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp', decimalDigits: 0);
+
+    return Container(
+      decoration: BoxDecoration(
+        color: widget.isDark ? AppColors.darkBackground : AppColors.background,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(color: Colors.grey[400], borderRadius: BorderRadius.circular(2)),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Text('Pilih Jenis Tiket', style: AppTypography.titleLarge),
+          const SizedBox(height: 12),
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 240),
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: widget.tickets.length,
+              itemBuilder: (context, index) {
+                final t = widget.tickets[index];
+                final isSel = _selectedTicket?.id == t.id;
+
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedTicket = t;
+                      _qty = 1;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isSel
+                          ? AppColors.primary.withOpacity(0.05)
+                          : (widget.isDark ? AppColors.darkSurface : AppColors.surface),
+                      border: Border.all(
+                        color: isSel ? AppColors.primary : (widget.isDark ? AppColors.darkBorder : AppColors.border),
+                        width: isSel ? 2 : 1,
+                      ),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(t.ticketName, style: AppTypography.labelLarge.copyWith(fontWeight: FontWeight.bold)),
+                              Text(t.description, style: AppTypography.caption),
+                              const SizedBox(height: 4),
+                              Text('Tersisa: ${t.remainingQuota}', style: AppTypography.caption.copyWith(color: AppColors.error)),
+                            ],
+                          ),
+                        ),
+                        Text(curFormat.format(t.price), style: AppTypography.labelLarge.copyWith(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          const Divider(),
+          if (_selectedTicket != null) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Jumlah Tiket', style: AppTypography.bodyMedium),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle_outline_rounded),
+                      onPressed: _qty > 1 ? () => setState(() => _qty--) : null,
+                    ),
+                    Text('$_qty', style: AppTypography.titleLarge),
+                    IconButton(
+                      icon: const Icon(Icons.add_circle_outline_rounded),
+                      onPressed: _qty < _selectedTicket!.maxPurchasePerUser && _qty < _selectedTicket!.remainingQuota
+                          ? () => setState(() => _qty++)
+                          : null,
+                    ),
+                  ],
+                )
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Total Pembayaran', style: AppTypography.caption),
+                    Text(curFormat.format(_selectedTicket!.price * _qty), style: AppTypography.price),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context, {'ticket': _selectedTicket, 'quantity': _qty});
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: const Text('Lanjut Checkout'),
+                )
+              ],
+            ),
+          ],
+          const SizedBox(height: 12),
+        ],
       ),
     );
   }

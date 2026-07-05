@@ -3,13 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../core/utils/extensions.dart';
-import '../../../features/auth/viewmodels/auth_viewmodel.dart';
-import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/app_text_field.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/core/utils/extensions.dart';
+import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
+import 'package:eventkuy/shared/widgets/app_button.dart';
+import 'package:eventkuy/shared/widgets/app_text_field.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

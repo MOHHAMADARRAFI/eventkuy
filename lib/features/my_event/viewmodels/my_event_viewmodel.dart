@@ -1,8 +1,8 @@
 // lib/features/my_event/viewmodels/my_event_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/models/registration_model.dart';
-import '../../../data/repositories/user_repository.dart';
+import 'package:eventkuy/data/models/registration_model.dart';
+import 'package:eventkuy/data/repositories/user_repository.dart';
 
 enum MyEventState { initial, loading, success, empty, error }
 

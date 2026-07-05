@@ -1,10 +1,10 @@
 // lib/features/explore/viewmodels/explore_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/dummy/dummy_data.dart';
-import '../../../data/models/event_model.dart';
-import '../../../data/repositories/event_repository.dart';
-import '../../../services/storage/local_storage.dart';
+import 'package:eventkuy/data/dummy/dummy_data.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/data/repositories/event_repository.dart';
+import 'package:eventkuy/services/storage/local_storage.dart';
 
 enum ExploreState { initial, loading, success, empty, error }
 

@@ -9,6 +9,9 @@ import '../models/organizer_model.dart';
 import '../models/registration_model.dart';
 import '../models/bookmark_model.dart';
 import '../models/user_model.dart';
+import '../models/ticket_model.dart';
+import '../models/payment_model.dart';
+import '../models/audit_log_model.dart';
 import '../../core/constants/app_colors.dart';
 
 class DummyData {
@@ -1448,6 +1451,164 @@ class DummyData {
   // ── Bookmarked Event IDs ──────────────────────────
   static Set<String> get bookmarkedEventIds =>
       bookmarks.map((b) => b.event.id).toSet();
+
+  // ── Tickets Dummy Data ────────────────────────────
+  static final List<TicketModel> tickets = [
+    TicketModel(
+      id: 'tck_001',
+      eventId: 'evt_001',
+      ticketName: 'Early Bird',
+      description: 'Tiket presale dengan harga diskon khusus.',
+      price: 100000,
+      quota: 100,
+      remainingQuota: 24,
+      soldQuantity: 76,
+      registrationStart: DateTime(2025, 7, 1),
+      registrationEnd: DateTime(2025, 7, 15),
+      benefits: const ['Akses Semua Sesi', 'E-certificate', 'Goodie Bag'],
+      isActive: true,
+      maxPurchasePerUser: 2,
+      colorLabel: 'blue',
+      sortOrder: 1,
+    ),
+    TicketModel(
+      id: 'tck_002',
+      eventId: 'evt_001',
+      ticketName: 'Regular',
+      description: 'Tiket masuk standar Flutter Festival.',
+      price: 150000,
+      quota: 300,
+      remainingQuota: 145,
+      soldQuantity: 155,
+      registrationStart: DateTime(2025, 7, 16),
+      registrationEnd: DateTime(2025, 8, 14),
+      benefits: const ['Akses Semua Sesi', 'E-certificate', 'Goodie Bag', 'Makan Siang'],
+      isActive: true,
+      maxPurchasePerUser: 4,
+      colorLabel: 'green',
+      sortOrder: 2,
+    ),
+    TicketModel(
+      id: 'tck_003',
+      eventId: 'evt_001',
+      ticketName: 'VIP Exclusive',
+      description: 'Tiket masuk VIP dengan baris depan dan networking eksklusif.',
+      price: 250000,
+      quota: 50,
+      remainingQuota: 5,
+      soldQuantity: 45,
+      registrationStart: DateTime(2025, 7, 1),
+      registrationEnd: DateTime(2025, 8, 14),
+      benefits: const ['Akses Semua Sesi', 'E-certificate', 'VIP Goodie Bag', 'VIP Lounge & Networking', 'Makan Siang Spesial'],
+      isActive: true,
+      maxPurchasePerUser: 1,
+      colorLabel: 'purple',
+      sortOrder: 3,
+    ),
+    TicketModel(
+      id: 'tck_004',
+      eventId: 'evt_002',
+      ticketName: 'Regular Bootcamp',
+      description: 'Akses penuh ke UI/UX bootcamp 30 hari.',
+      price: 299000,
+      quota: 100,
+      remainingQuota: 13,
+      soldQuantity: 87,
+      registrationStart: DateTime(2025, 7, 5),
+      registrationEnd: DateTime(2025, 7, 30),
+      benefits: const ['Mentoring 1-on-1', 'Sertifikat Kelulusan', 'Job Referral'],
+      isActive: true,
+      maxPurchasePerUser: 1,
+      colorLabel: 'indigo',
+      sortOrder: 1,
+    ),
+  ];
+
+  // ── Payments Dummy Data ───────────────────────────
+  static final List<PaymentModel> payments = [
+    PaymentModel(
+      id: 'pay_001',
+      ticketId: 'tck_001',
+      userId: 'user_001',
+      amount: 100000,
+      paymentMethod: 'QRIS',
+      paymentStatus: PaymentStatus.paid,
+      paymentDate: DateTime(2025, 7, 10, 14, 30),
+      expiredAt: DateTime(2025, 7, 10, 14, 45),
+      transactionNumber: 'TX-FLUTTER-8921203',
+    ),
+    PaymentModel(
+      id: 'pay_002',
+      ticketId: 'tck_003',
+      userId: 'user_002',
+      amount: 250000,
+      paymentMethod: 'VA',
+      paymentStatus: PaymentStatus.paid,
+      paymentDate: DateTime(2025, 7, 12, 10, 15),
+      expiredAt: DateTime(2025, 7, 12, 10, 30),
+      transactionNumber: 'TX-FLUTTER-5534211',
+    ),
+    PaymentModel(
+      id: 'pay_003',
+      ticketId: 'tck_002',
+      userId: 'user_003',
+      amount: 150000,
+      paymentMethod: 'QRIS',
+      paymentStatus: PaymentStatus.pending,
+      expiredAt: DateTime.now().add(const Duration(minutes: 10)),
+      transactionNumber: 'TX-FLUTTER-1290382',
+    ),
+    PaymentModel(
+      id: 'pay_004',
+      ticketId: 'tck_004',
+      userId: 'user_004',
+      amount: 299000,
+      paymentMethod: 'QRIS',
+      paymentStatus: PaymentStatus.failed,
+      expiredAt: DateTime(2025, 7, 15, 11, 0),
+      transactionNumber: 'TX-UIUX-4019283',
+    ),
+  ];
+
+  // ── Audit Logs Dummy Data ─────────────────────────
+  static final List<AuditLogModel> auditLogs = [
+    AuditLogModel(
+      id: 'log_001',
+      userId: 'user_001',
+      userName: 'Rizky Pratama',
+      role: UserRole.participant,
+      action: 'Register Event',
+      target: 'evt_001',
+      description: 'Mendaftar pada event Flutter Festival Indonesia 2025',
+      createdAt: DateTime(2025, 7, 10, 14, 30),
+      ipAddress: '192.168.1.15',
+      device: 'Xiaomi Redmi Note 10',
+    ),
+    AuditLogModel(
+      id: 'log_002',
+      userId: 'org_001',
+      userName: 'GDSC Indonesia',
+      role: UserRole.organizer,
+      action: 'Create Event',
+      target: 'evt_001',
+      description: 'Membuat event Flutter Festival Indonesia 2025',
+      createdAt: DateTime(2025, 7, 1, 10, 0),
+      ipAddress: '103.122.14.89',
+      device: 'MacBook Pro M1',
+    ),
+    AuditLogModel(
+      id: 'log_003',
+      userId: 'admin_001',
+      userName: 'Supriadi (Admin)',
+      role: UserRole.admin,
+      action: 'Approve Event',
+      target: 'evt_001',
+      description: 'Menyetujui permohonan publikasi event Flutter Festival Indonesia 2025',
+      createdAt: DateTime(2025, 7, 2, 09, 15),
+      ipAddress: '110.150.9.112',
+      device: 'Windows 11 PC - Chrome',
+    ),
+  ];
 }
 
 

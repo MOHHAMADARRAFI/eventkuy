@@ -1,7 +1,7 @@
 // lib/features/settings/viewmodels/settings_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../services/storage/local_storage.dart';
+import 'package:eventkuy/services/storage/local_storage.dart';
 
 class SettingsViewModel extends ChangeNotifier {
   final LocalStorage _storage;

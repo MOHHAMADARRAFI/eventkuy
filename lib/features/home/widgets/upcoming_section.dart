@@ -1,13 +1,13 @@
 // lib/features/home/widgets/upcoming_section.dart
 
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../data/models/event_model.dart';
-import '../../../shared/widgets/event_card.dart';
-import '../../../shared/widgets/section_header.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/shared/widgets/event_card.dart';
+import 'package:eventkuy/shared/widgets/section_header.dart';
 
 class UpcomingSection extends StatelessWidget {
   final List<EventModel> events;

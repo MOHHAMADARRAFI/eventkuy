@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../data/models/event_model.dart';
-import '../../../shared/widgets/event_card.dart';
-import '../../../shared/widgets/section_header.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/shared/widgets/event_card.dart';
+import 'package:eventkuy/shared/widgets/section_header.dart';
 
 class TrendingSection extends StatelessWidget {
   final List<EventModel> events;

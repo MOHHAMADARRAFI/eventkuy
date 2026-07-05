@@ -1,8 +1,8 @@
 // lib/features/notification/viewmodels/notification_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/models/notification_model.dart';
-import '../../../data/repositories/notification_repository.dart';
+import 'package:eventkuy/data/models/notification_model.dart';
+import 'package:eventkuy/data/repositories/notification_repository.dart';
 
 enum NotifState { initial, loading, success, empty, error }
 

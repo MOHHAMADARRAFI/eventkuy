@@ -6,7 +6,13 @@ import '../dummy/dummy_data.dart';
 import '../models/event_model.dart';
 
 abstract class IEventRepository {
-  Future<List<EventModel>> getEvents({String? categoryId, String? query});
+  Future<List<EventModel>> getEvents({
+    String? categoryId,
+    String? query,
+    EventMode? mode,
+    bool? isFree,
+    String? sortBy,
+  });
   Future<List<EventModel>> getTrendingEvents();
   Future<List<EventModel>> getUpcomingEvents();
   Future<List<EventModel>> getFeaturedEvents();

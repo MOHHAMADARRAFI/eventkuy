@@ -1,9 +1,9 @@
 // lib/features/auth/viewmodels/auth_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/models/user_model.dart';
-import '../../../data/repositories/user_repository.dart';
-import '../../../services/storage/local_storage.dart';
+import 'package:eventkuy/data/models/user_model.dart';
+import 'package:eventkuy/data/repositories/user_repository.dart';
+import 'package:eventkuy/services/storage/local_storage.dart';
 
 enum AuthState { initial, loading, success, error }
 
@@ -17,12 +17,19 @@ class AuthViewModel extends ChangeNotifier {
   UserModel? _currentUser;
   String? _errorMessage;
   bool _isLoggedIn = false;
+  UserRole _activeRole = UserRole.participant;
 
   AuthState get state => _state;
   UserModel? get currentUser => _currentUser;
   String? get errorMessage => _errorMessage;
   bool get isLoggedIn => _isLoggedIn;
   bool get isLoading => _state == AuthState.loading;
+  UserRole get activeRole => _activeRole;
+
+  void switchRole(UserRole role) {
+    _activeRole = role;
+    notifyListeners();
+  }
 
   Future<void> checkAuthState() async {
     _isLoggedIn = _storage.isLoggedIn;

@@ -1,14 +1,14 @@
 // lib/features/explore/widgets/filter_bottom_sheet.dart
 
 import 'package:flutter/material.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../data/dummy/dummy_data.dart';
-import '../../../data/models/event_model.dart';
-import '../../../shared/widgets/app_button.dart';
-import '../viewmodels/explore_viewmodel.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/data/dummy/dummy_data.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/shared/widgets/app_button.dart';
+import 'package:eventkuy/features/explore/viewmodels/explore_viewmodel.dart';
 
 class FilterBottomSheet extends StatefulWidget {
   final FilterOptions initialFilters;

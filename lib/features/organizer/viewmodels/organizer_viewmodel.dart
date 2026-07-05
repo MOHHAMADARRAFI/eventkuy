@@ -1,10 +1,10 @@
 // lib/features/organizer/viewmodels/organizer_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/models/event_model.dart';
-import '../../../data/models/organizer_model.dart';
-import '../../../data/repositories/event_repository.dart';
-import '../../../data/dummy/dummy_data.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/data/models/organizer_model.dart';
+import 'package:eventkuy/data/repositories/event_repository.dart';
+import 'package:eventkuy/data/dummy/dummy_data.dart';
 
 enum OrganizerState { initial, loading, success, error }
 

@@ -1,17 +1,18 @@
 // lib/features/profile/views/profile_screen.dart
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../data/models/user_model.dart';
-import '../../../features/auth/viewmodels/auth_viewmodel.dart';
-import '../../../shared/widgets/app_button.dart';
-import '../../../shared/widgets/app_dialog.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/data/models/user_model.dart';
+import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
+import 'package:eventkuy/shared/widgets/app_button.dart';
+import 'package:eventkuy/shared/widgets/app_dialog.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -80,6 +81,12 @@ class ProfileScreen extends StatelessWidget {
                           label: 'Pengaturan',
                           onTap: () => context.push('/settings'),
                         ),
+                        if (kDebugMode)
+                          _MenuItem(
+                            icon: Icons.swap_horizontal_circle_outlined,
+                            label: 'Ganti Role (Debug)',
+                            onTap: () => _showRoleSwitcherDialog(context),
+                          ),
                         _MenuItem(
                           icon: Icons.help_outline_rounded,
                           label: 'Bantuan & FAQ',
@@ -118,6 +125,53 @@ class ProfileScreen extends StatelessWidget {
             const SliverToBoxAdapter(child: SizedBox(height: 100)),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showRoleSwitcherDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Pilih Role (Debug Mode)'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.person_outline_rounded, color: AppColors.primary),
+              title: const Text('Participant Mode'),
+              onTap: () {
+                Navigator.pop(context);
+                context.read<AuthViewModel>().switchRole(UserRole.participant);
+                context.go('/home');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.business_center_outlined, color: AppColors.secondary),
+              title: const Text('Organizer Mode'),
+              onTap: () {
+                Navigator.pop(context);
+                context.read<AuthViewModel>().switchRole(UserRole.organizer);
+                context.go('/organizer/dashboard');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.admin_panel_settings_outlined, color: AppColors.error),
+              title: const Text('Admin Mode'),
+              onTap: () {
+                Navigator.pop(context);
+                context.read<AuthViewModel>().switchRole(UserRole.admin);
+                context.go('/admin/dashboard');
+              },
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Batal'),
+          ),
+        ],
       ),
     );
   }

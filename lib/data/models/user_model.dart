@@ -1,5 +1,9 @@
 // lib/data/models/user_model.dart
 
+enum UserRole { participant, organizer, admin }
+
+enum VerificationStatus { none, pending, approved, rejected }
+
 class UserModel {
   final String id;
   final String name;
@@ -11,6 +15,18 @@ class UserModel {
   final DateTime joinedAt;
   final int totalRegistrations;
   final int totalBookmarks;
+  
+  // Organizer specific fields
+  final UserRole role;
+  final String? organizationName;
+  final String? organizationLogo;
+  final VerificationStatus verificationStatus;
+  final String? verificationDocsUrl;
+  final String? bankName;
+  final String? bankAccountNo;
+  final String? bankAccountName;
+  final Map<String, String>? socialMediaLinks;
+  final String? phoneNumber;
 
   const UserModel({
     required this.id,
@@ -23,6 +39,16 @@ class UserModel {
     required this.joinedAt,
     required this.totalRegistrations,
     required this.totalBookmarks,
+    this.role = UserRole.participant,
+    this.organizationName,
+    this.organizationLogo,
+    this.verificationStatus = VerificationStatus.none,
+    this.verificationDocsUrl,
+    this.bankName,
+    this.bankAccountNo,
+    this.bankAccountName,
+    this.socialMediaLinks,
+    this.phoneNumber,
   });
 
   String get initials {
@@ -51,6 +77,16 @@ class UserModel {
     List<String>? interests,
     String? bio,
     String? location,
+    UserRole? role,
+    String? organizationName,
+    String? organizationLogo,
+    VerificationStatus? verificationStatus,
+    String? verificationDocsUrl,
+    String? bankName,
+    String? bankAccountNo,
+    String? bankAccountName,
+    Map<String, String>? socialMediaLinks,
+    String? phoneNumber,
   }) {
     return UserModel(
       id: id,
@@ -63,6 +99,16 @@ class UserModel {
       joinedAt: joinedAt,
       totalRegistrations: totalRegistrations,
       totalBookmarks: totalBookmarks,
+      role: role ?? this.role,
+      organizationName: organizationName ?? this.organizationName,
+      organizationLogo: organizationLogo ?? this.organizationLogo,
+      verificationStatus: verificationStatus ?? this.verificationStatus,
+      verificationDocsUrl: verificationDocsUrl ?? this.verificationDocsUrl,
+      bankName: bankName ?? this.bankName,
+      bankAccountNo: bankAccountNo ?? this.bankAccountNo,
+      bankAccountName: bankAccountName ?? this.bankAccountName,
+      socialMediaLinks: socialMediaLinks ?? this.socialMediaLinks,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
     );
   }
 }

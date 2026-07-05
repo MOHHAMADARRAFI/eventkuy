@@ -3,17 +3,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_dimensions.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../core/utils/extensions.dart';
-import '../../../data/models/event_model.dart';
-import '../../../data/models/registration_model.dart';
-import '../../../features/auth/viewmodels/auth_viewmodel.dart';
-import '../../../shared/widgets/empty_state_widget.dart';
-import '../../../shared/widgets/shimmer_loader.dart';
-import '../viewmodels/my_event_viewmodel.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_dimensions.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/core/utils/extensions.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/data/models/registration_model.dart';
+import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
+import 'package:eventkuy/shared/widgets/empty_state_widget.dart';
+import 'package:eventkuy/shared/widgets/shimmer_loader.dart';
+import 'package:eventkuy/features/my_event/viewmodels/my_event_viewmodel.dart';
 
 class MyEventScreen extends StatefulWidget {
   const MyEventScreen({super.key});

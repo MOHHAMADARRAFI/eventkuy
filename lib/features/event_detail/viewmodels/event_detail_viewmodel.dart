@@ -1,10 +1,10 @@
 // lib/features/event_detail/viewmodels/event_detail_viewmodel.dart
 
 import 'package:flutter/material.dart';
-import '../../../data/models/event_model.dart';
-import '../../../data/repositories/event_repository.dart';
-import '../../../data/repositories/bookmark_repository.dart';
-import '../../../data/repositories/user_repository.dart';
+import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/data/repositories/event_repository.dart';
+import 'package:eventkuy/data/repositories/bookmark_repository.dart';
+import 'package:eventkuy/data/repositories/user_repository.dart';
 
 enum DetailState { initial, loading, success, error }
 

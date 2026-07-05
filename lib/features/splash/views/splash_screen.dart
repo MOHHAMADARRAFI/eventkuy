@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_typography.dart';
-import '../../../features/auth/viewmodels/auth_viewmodel.dart';
-import '../../../services/storage/local_storage.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_typography.dart';
+import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
+import 'package:eventkuy/services/storage/local_storage.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

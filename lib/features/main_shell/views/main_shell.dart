@@ -4,9 +4,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_strings.dart';
-import '../../../features/notification/viewmodels/notification_viewmodel.dart';
+import 'package:eventkuy/core/constants/app_colors.dart';
+import 'package:eventkuy/core/constants/app_strings.dart';
+import 'package:eventkuy/features/notification/viewmodels/notification_viewmodel.dart';
 
 class MainShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
