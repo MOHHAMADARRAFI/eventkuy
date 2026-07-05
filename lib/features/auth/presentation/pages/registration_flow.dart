@@ -318,11 +318,23 @@ class _PesertaDashboardState extends State<PesertaDashboard> {
   }
 
   Future<void> _loadEvents() async {
-    final data = await DatabaseHelper().getAllEvents();
-    setState(() {
-      _events = data;
-      _isLoading = false;
-    });
+    try {
+      final data = await DatabaseHelper().getAllEvents();
+      if (!mounted) return;
+      setState(() {
+        _events = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _events = [];
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat event: $e'), backgroundColor: Colors.red),
+      );
+    }
   }
 
   @override
@@ -414,11 +426,23 @@ class _EODashboardState extends State<EODashboard> {
   }
 
   Future<void> _loadEvents() async {
-    final data = await DatabaseHelper().getAllEvents();
-    setState(() {
-      _events = data;
-      _isLoading = false;
-    });
+    try {
+      final data = await DatabaseHelper().getAllEvents();
+      if (!mounted) return;
+      setState(() {
+        _events = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _events = [];
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memuat event: $e'), backgroundColor: Colors.red),
+      );
+    }
   }
 
   void _showEventFormBottomSheet({Map<String, dynamic>? eventToEdit}) {

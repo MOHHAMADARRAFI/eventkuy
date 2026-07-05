@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:eventkuy/data/local/database_helper.dart';
 import 'package:eventkuy/features/auth/presentation/pages/registration_flow.dart';
+import 'package:eventkuy/features/auth/views/login_screen.dart';
 
 // ============================================================================
 // SIMULASI LOGIN (Admin / EO / Peserta)
@@ -190,7 +191,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> with Single
             onPressed: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LoginSimulationScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           )
@@ -375,11 +376,26 @@ class _AllEventsTabState extends State<_AllEventsTab> {
 
   Future<void> _loadAllEvents() async {
     // Membaca seluruh data dari SQLite database
-    final data = await DatabaseHelper().getAllEvents();
-    setState(() {
-      _events = data;
-      _isLoading = false;
-    });
+    try {
+      final data = await DatabaseHelper().getAllEvents();
+      if (!mounted) return;
+      setState(() {
+        _events = data;
+        _isLoading = false;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _events = [];
+        _isLoading = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal memuat event dari SQLite: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
