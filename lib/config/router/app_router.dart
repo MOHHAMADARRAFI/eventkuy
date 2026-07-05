@@ -24,6 +24,7 @@ import '../../features/organizer/views/organizer_screen.dart';
 import '../../features/profile/views/edit_profile_screen.dart';
 import '../../features/profile/views/profile_screen.dart';
 import '../../features/settings/views/settings_screen.dart';
+import '../../features/splash/views/opening_screen.dart';
 import '../../features/splash/views/splash_screen.dart';
 
 class AppRouter {
@@ -36,6 +37,10 @@ class AppRouter {
         GoRoute(
           path: '/splash',
           builder: (context, state) => const SplashScreen(),
+        ),
+        GoRoute(
+          path: '/opening',
+          builder: (context, state) => const OpeningScreen(),
         ),
         GoRoute(
           path: '/onboarding',

@@ -37,7 +37,7 @@ class NearbySection extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SizedBox(
-          height: 260,
+          height: 290,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: const EdgeInsets.symmetric(

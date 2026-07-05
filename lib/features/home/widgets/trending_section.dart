@@ -38,7 +38,7 @@ class TrendingSection extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         SizedBox(
-          height: 260,
+          height: 290,
           child: AnimationLimiter(
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
