@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:eventkuy/data/local/database_helper.dart';
+
 
 // ============================================================================
 // HALAMAN 1: PILIH KATEGORI (ROLE)
@@ -298,8 +300,30 @@ class _RegistrationFormScreenState extends State<RegistrationFormScreen> {
 // ============================================================================
 // HALAMAN 3A: DASHBOARD PESERTA
 // ============================================================================
-class PesertaDashboard extends StatelessWidget {
+class PesertaDashboard extends StatefulWidget {
   const PesertaDashboard({super.key});
+
+  @override
+  State<PesertaDashboard> createState() => _PesertaDashboardState();
+}
+
+class _PesertaDashboardState extends State<PesertaDashboard> {
+  List<Map<String, dynamic>> _events = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEvents();
+  }
+
+  Future<void> _loadEvents() async {
+    final data = await DatabaseHelper().getAllEvents();
+    setState(() {
+      _events = data;
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -308,21 +332,24 @@ class PesertaDashboard extends StatelessWidget {
         title: const Text('EventKuy - Peserta'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Menghilangkan tombol back karena ini halaman utama
+        automaticallyImplyLeading: false,
       ),
-      body: ListView(
+      body: _isLoading 
+        ? const Center(child: CircularProgressIndicator())
+        : ListView(
         padding: const EdgeInsets.all(20),
         children: [
           const Text('Event Menarik Untukmu', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           const SizedBox(height: 20),
-          _buildEventCard('Tech Conference 2026', 'Jakarta Convention Center', 'Rp 150.000'),
-          _buildEventCard('Seminar Bisnis Digital', 'Online Zoom', 'Gratis'),
-          _buildEventCard('Konser Musik Indie', 'Lapangan Senayan', 'Rp 250.000'),
+          if (_events.isEmpty)
+            const Center(child: Padding(padding: EdgeInsets.all(40.0), child: Text('Belum ada event tersedia.', style: TextStyle(color: Colors.grey))))
+          else
+            ..._events.map((event) => _buildEventCard(event)),
           const SizedBox(height: 20),
           SizedBox(
             height: 50,
             child: ElevatedButton.icon(
-              onPressed: () {}, // Tombol dummy
+              onPressed: () {}, 
               icon: const Icon(Icons.search),
               label: const Text('Cari & Beli Tiket Event Lainnya', style: TextStyle(fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(
@@ -337,7 +364,11 @@ class PesertaDashboard extends StatelessWidget {
     );
   }
 
-  Widget _buildEventCard(String title, String location, String price) {
+  Widget _buildEventCard(Map<String, dynamic> event) {
+    bool isFree = event['price'] == 0 || event['price'] == 0.0;
+    String location = event['isOnline'] == 1 ? 'Online: ${event['locationOrLink']}' : event['locationOrLink'];
+    String priceStr = isFree ? 'Gratis' : 'Rp ${event['price'].toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')}';
+
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -350,10 +381,10 @@ class PesertaDashboard extends StatelessWidget {
           decoration: BoxDecoration(color: Colors.indigo.shade50, borderRadius: BorderRadius.circular(8)),
           child: const Icon(Icons.event, color: Colors.indigo),
         ),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        title: Text(event['title'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
         subtitle: Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Text('$location\n$price', style: const TextStyle(height: 1.4)),
+          child: Text('${event['date']}\n$location\n$priceStr', style: const TextStyle(height: 1.4)),
         ),
         isThreeLine: true,
         trailing: const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
@@ -373,33 +404,22 @@ class EODashboard extends StatefulWidget {
 }
 
 class _EODashboardState extends State<EODashboard> {
-  // 1. State List Event
-  List<Map<String, dynamic>> _events = [
-    {
-      'id': '1',
-      'judul': 'Workshop Flutter Developer',
-      'kategori': 'Workshop',
-      'tanggal': '12 Agustus 2026',
-      'kuota': '100',
-      'jenis': 'Offline',
-      'lokasi': 'Gedung Manggala Wanabakti, Jakarta',
-      'harga': '150000',
-      'pembicara': 'Budi Santoso',
-      'benefit': ['E-Sertifikat', 'Konsumsi', 'Merchandise'],
-    },
-    {
-      'id': '2',
-      'judul': 'Design Thinking Class',
-      'kategori': 'Seminar',
-      'tanggal': '20 September 2026',
-      'kuota': '150',
-      'jenis': 'Online',
-      'lokasi': 'https://zoom.us/j/123456789',
-      'harga': '0',
-      'pembicara': 'Siska Amelia',
-      'benefit': ['E-Sertifikat'],
-    }
-  ];
+  List<Map<String, dynamic>> _events = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEvents();
+  }
+
+  Future<void> _loadEvents() async {
+    final data = await DatabaseHelper().getAllEvents();
+    setState(() {
+      _events = data;
+      _isLoading = false;
+    });
+  }
 
   void _showEventFormBottomSheet({Map<String, dynamic>? eventToEdit}) {
     showModalBottomSheet(
@@ -409,22 +429,17 @@ class _EODashboardState extends State<EODashboard> {
       builder: (context) {
         return _EventFormSheet(
           eventToEdit: eventToEdit,
-          onSave: (Map<String, dynamic> newEvent) {
-            setState(() {
-              if (eventToEdit == null) {
-                // Mode Tambah
-                newEvent['id'] = DateTime.now().millisecondsSinceEpoch.toString();
-                _events.add(newEvent);
-              } else {
-                // Mode Edit
-                final index = _events.indexWhere((e) => e['id'] == eventToEdit['id']);
-                if (index != -1) {
-                  newEvent['id'] = eventToEdit['id'];
-                  _events[index] = newEvent;
-                }
-              }
-            });
+          onSave: (Map<String, dynamic> newEvent) async {
+            if (eventToEdit == null) {
+              await DatabaseHelper().insertEvent(newEvent);
+            } else {
+              newEvent['id'] = eventToEdit['id'];
+              await DatabaseHelper().updateEvent(newEvent);
+            }
+            
+            _loadEvents(); // Refresh data
             Navigator.pop(context);
+            
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(eventToEdit == null ? 'Event berhasil ditambahkan!' : 'Event berhasil diperbarui!'),
@@ -445,9 +460,11 @@ class _EODashboardState extends State<EODashboard> {
         title: const Text('EO Dashboard'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
-        automaticallyImplyLeading: false, // Menghilangkan tombol back
+        automaticallyImplyLeading: false, 
       ),
-      body: ListView(
+      body: _isLoading 
+        ? const Center(child: CircularProgressIndicator())
+        : ListView(
         padding: const EdgeInsets.all(20),
         children: [
           const Text('Event yang Pernah Diposting', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.indigo)),
@@ -470,7 +487,7 @@ class _EODashboardState extends State<EODashboard> {
   }
 
   Widget _buildEOEventCard(Map<String, dynamic> event) {
-    bool isFree = event['harga'] == '0' || event['harga'] == '';
+    bool isFree = event['price'] == 0 || event['price'] == 0.0;
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -494,11 +511,11 @@ class _EODashboardState extends State<EODashboard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(event['judul'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.indigo)),
+                      Text(event['title'], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.indigo)),
                       const SizedBox(height: 4),
-                      Text('${event['kategori']} • ${event['jenis']}', style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
+                      Text('${event['category']} • ${event['isOnline'] == 1 ? 'Online' : 'Offline'}', style: TextStyle(color: Colors.grey.shade700, fontSize: 13)),
                       const SizedBox(height: 4),
-                      Text(event['tanggal'], style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
+                      Text(event['date'], style: TextStyle(color: Colors.grey.shade600, fontSize: 13)),
                     ],
                   ),
                 ),
@@ -518,7 +535,7 @@ class _EODashboardState extends State<EODashboard> {
                   children: [
                     const Text('Harga Tiket', style: TextStyle(fontSize: 12, color: Colors.grey)),
                     Text(
-                      isFree ? 'Gratis' : 'Rp ${event['harga']}', 
+                      isFree ? 'Gratis' : 'Rp ${event['price'].toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')}', 
                       style: TextStyle(fontWeight: FontWeight.bold, color: isFree ? Colors.green : Colors.indigo)
                     ),
                   ],
@@ -527,7 +544,7 @@ class _EODashboardState extends State<EODashboard> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     const Text('Kuota', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    Text('${event['kuota']} Orang', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
+                    Text('${event['quota']} Orang', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
                   ],
                 ),
               ],
@@ -576,19 +593,23 @@ class _EventFormSheetState extends State<_EventFormSheet> {
   void initState() {
     super.initState();
     final e = widget.eventToEdit;
-    _judulCtrl = TextEditingController(text: e?['judul'] ?? '');
-    _tanggalCtrl = TextEditingController(text: e?['tanggal'] ?? '');
-    _kuotaCtrl = TextEditingController(text: e?['kuota'] ?? '');
-    _lokasiCtrl = TextEditingController(text: e?['lokasi'] ?? '');
-    _hargaCtrl = TextEditingController(text: e?['harga'] ?? '');
-    _pembicaraCtrl = TextEditingController(text: e?['pembicara'] ?? '');
+    _judulCtrl = TextEditingController(text: e?['title'] ?? '');
+    _tanggalCtrl = TextEditingController(text: e?['date'] ?? '');
+    _kuotaCtrl = TextEditingController(text: e?['quota'] ?? '');
+    _lokasiCtrl = TextEditingController(text: e?['locationOrLink'] ?? '');
+    
+    // SQLite format
+    String hargaStr = e != null ? (e['price'] == 0 || e['price'] == 0.0 ? '0' : e['price'].toString().replaceAll(RegExp(r'([.]*0)(?!.*\d)'), '')) : '';
+    _hargaCtrl = TextEditingController(text: hargaStr);
+    _pembicaraCtrl = TextEditingController(text: e?['speaker'] ?? '');
 
     if (e != null) {
-      _kategori = e['kategori'] ?? 'Seminar';
-      _jenis = e['jenis'] ?? 'Offline';
-      _bannerUploaded = true; // Simulasi kalau edit berarti udah punya banner
+      _kategori = e['category'] ?? 'Seminar';
+      _jenis = e['isOnline'] == 1 ? 'Online' : 'Offline';
+      _bannerUploaded = true;
       
-      List<dynamic> benefitList = e['benefit'] ?? [];
+      String benefitsStr = e['benefits'] ?? '';
+      List<String> benefitList = benefitsStr.split(',');
       for (var key in _benefits.keys) {
         _benefits[key] = benefitList.contains(key);
       }
@@ -620,15 +641,15 @@ class _EventFormSheetState extends State<_EventFormSheet> {
     });
 
     widget.onSave({
-      'judul': _judulCtrl.text,
-      'kategori': _kategori,
-      'tanggal': _tanggalCtrl.text,
-      'kuota': _kuotaCtrl.text,
-      'jenis': _jenis,
-      'lokasi': _lokasiCtrl.text,
-      'harga': _hargaCtrl.text,
-      'pembicara': _pembicaraCtrl.text,
-      'benefit': selectedBenefits,
+      'title': _judulCtrl.text,
+      'category': _kategori,
+      'date': _tanggalCtrl.text,
+      'quota': _kuotaCtrl.text,
+      'isOnline': _jenis == 'Online' ? 1 : 0,
+      'locationOrLink': _lokasiCtrl.text,
+      'price': double.tryParse(_hargaCtrl.text) ?? 0.0,
+      'speaker': _pembicaraCtrl.text,
+      'benefits': selectedBenefits.join(','),
     });
   }
 
@@ -641,10 +662,9 @@ class _EventFormSheetState extends State<_EventFormSheet> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      margin: EdgeInsets.only(top: 40), // Spasi dari atas layar agar bisa discroll optimal
+      margin: const EdgeInsets.only(top: 40),
       child: Column(
         children: [
-          // Header Modal
           Container(
             padding: const EdgeInsets.all(16),
             decoration: const BoxDecoration(
@@ -665,7 +685,6 @@ class _EventFormSheetState extends State<_EventFormSheet> {
               ],
             ),
           ),
-          // Body Form
           Expanded(
             child: ListView(
               padding: EdgeInsets.only(
@@ -675,7 +694,6 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 bottom: MediaQuery.of(context).viewInsets.bottom + 24,
               ),
               children: [
-                // Upload Banner Simulasi
                 GestureDetector(
                   onTap: () => setState(() => _bannerUploaded = true),
                   child: AnimatedContainer(
@@ -712,7 +730,6 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 24),
                 
-                // Judul & Kategori
                 TextField(
                   controller: _judulCtrl,
                   decoration: _inputDecoration('Judul Event'),
@@ -726,7 +743,6 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 16),
                 
-                // Tanggal & Kuota
                 Row(
                   children: [
                     Expanded(
@@ -747,7 +763,6 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 24),
 
-                // Format Event Toggle
                 const Text('Format Event', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
                 const SizedBox(height: 8),
                 Row(
@@ -776,14 +791,12 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 8),
                 
-                // Lokasi / Link
                 TextField(
                   controller: _lokasiCtrl,
                   decoration: _inputDecoration(_jenis == 'Offline' ? 'Alamat Lengkap Venue' : 'Link Zoom / GMeet'),
                 ),
                 const SizedBox(height: 16),
 
-                // Harga
                 TextField(
                   controller: _hargaCtrl,
                   keyboardType: TextInputType.number,
@@ -791,14 +804,12 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 16),
 
-                // Pembicara
                 TextField(
                   controller: _pembicaraCtrl,
                   decoration: _inputDecoration('Nama Pembicara (Opsional)'),
                 ),
                 const SizedBox(height: 24),
 
-                // Benefit Checkbox
                 const Text('Benefit untuk Peserta', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo)),
                 const SizedBox(height: 8),
                 ..._benefits.keys.map((key) {
