@@ -15,7 +15,7 @@ import 'package:eventkuy/data/repositories/audit_repository.dart';
 
 // Core & Base Participant Screens
 import 'package:eventkuy/features/auth/views/login_screen.dart';
-import 'package:eventkuy/features/auth/views/register_screen.dart';
+import 'package:eventkuy/features/auth/presentation/pages/registration_flow.dart';
 import 'package:eventkuy/features/bookmark/views/bookmark_screen.dart';
 import 'package:eventkuy/features/event_detail/viewmodels/event_detail_viewmodel.dart';
 import 'package:eventkuy/features/event_detail/views/event_detail_screen.dart';
@@ -89,7 +89,7 @@ class AppRouter {
         ),
         GoRoute(
           path: '/register',
-          builder: (context, state) => const RegisterScreen(),
+          builder: (context, state) => const RoleSelectionScreen(),
         ),
 
         // ── Event Detail ───────────────────────────

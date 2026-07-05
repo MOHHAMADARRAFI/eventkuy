@@ -17,7 +17,7 @@ import 'package:eventkuy/shared/widgets/app_button.dart';
 import 'package:eventkuy/shared/widgets/app_dialog.dart';
 import 'package:eventkuy/shared/widgets/empty_state_widget.dart';
 import 'package:eventkuy/features/event_detail/viewmodels/event_detail_viewmodel.dart';
-import 'package:eventkuy/features/payment/presentation/pages/payment_selection_screen.dart';
+import 'package:eventkuy/features/payment/presentation/pages/ticket_payment_flow.dart';
 import 'package:eventkuy/data/repositories/ticket_repository.dart';
 import 'package:eventkuy/data/models/ticket_model.dart';
 import 'package:intl/intl.dart';
@@ -118,7 +118,10 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     final paymentSuccess = await Navigator.push<bool>(
       context,
       MaterialPageRoute(
-        builder: (context) => const PaymentSelectionScreen(),
+        builder: (context) => PaymentSelectionScreen(
+          ticketCount: qty,
+          totalPrice: (ticket.price * qty).toInt(),
+        ),
       ),
     );
 
@@ -892,26 +895,32 @@ class _TicketSelectionSheetState extends State<_TicketSelectionSheet> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Total Pembayaran', style: AppTypography.caption),
-                    Text(curFormat.format(_selectedTicket!.price * _qty), style: AppTypography.price),
-                  ],
+                const Text('Total Pembayaran', style: TextStyle(fontSize: 14, color: Colors.grey)),
+                Text(
+                  curFormat.format(_selectedTicket!.price * _qty),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.indigo),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context, {'ticket': _selectedTicket, 'quantity': _qty});
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                  child: const Text('Lanjut Checkout'),
-                )
               ],
+            ),
+            const SizedBox(height: 24),
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context, {'ticket': _selectedTicket, 'quantity': _qty});
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.indigo,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 2,
+                ),
+                child: const Text(
+                  'Lanjut ke Pembayaran',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, letterSpacing: 1),
+                ),
+              ),
             ),
           ],
           const SizedBox(height: 12),
