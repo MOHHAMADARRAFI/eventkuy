@@ -17,6 +17,7 @@ import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/app_dialog.dart';
 import '../../../shared/widgets/empty_state_widget.dart';
 import '../viewmodels/event_detail_viewmodel.dart';
+import '../../payment/presentation/pages/payment_selection_screen.dart';
 
 class EventDetailScreen extends StatefulWidget {
   final String eventId;
@@ -60,26 +61,37 @@ class _EventDetailScreenState extends State<EventDetailScreen> {
     final confirmed = await showConfirmDialog(
       context,
       title: AppStrings.registerConfirmTitle,
-      message: AppStrings.registerConfirmDesc,
-      confirmLabel: 'Daftar',
-      icon: Icons.event_available_rounded,
+      message: 'Anda akan dialihkan ke halaman pembayaran untuk menyelesaikan pendaftaran.',
+      confirmLabel: 'Lanjut',
+      icon: Icons.payment_rounded,
     );
 
     if (confirmed != true || !mounted) return;
 
-    final userId = context.read<AuthViewModel>().currentUser?.id ?? 'user_001';
-    final success =
-        await context.read<EventDetailViewModel>().registerForEvent(userId);
+    // Navigasi ke halaman pemilihan pembayaran dan tunggu hasilnya
+    final paymentSuccess = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PaymentSelectionScreen(),
+      ),
+    );
 
-    if (!mounted) return;
-    if (success) {
-      await showSuccessDialog(
-        context,
-        title: AppStrings.registerSuccess,
-        message: AppStrings.registerSuccessDesc,
-      );
-    } else {
-      context.showErrorSnack('Pendaftaran gagal. Coba lagi.');
+    if (paymentSuccess == true && mounted) {
+      final userId = context.read<AuthViewModel>().currentUser?.id ?? 'user_001';
+      final success = await context.read<EventDetailViewModel>().registerForEvent(userId);
+
+      if (!mounted) return;
+      if (success) {
+        // Tampilkan pesan sukses
+        context.showSnack(
+          'Pembayaran berhasil! Tiket ditambahkan ke Event Saya.',
+          backgroundColor: AppColors.success,
+        );
+        // Arahkan ke tab Event Saya (route /my-event)
+        context.go('/my-event');
+      } else {
+        context.showErrorSnack('Pendaftaran gagal. Coba lagi.');
+      }
     }
   }
 

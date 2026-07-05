@@ -132,8 +132,7 @@ class _MyEventScreenState extends State<MyEventScreen>
                         return _RegistrationCard(
                           registration: registrations[index],
                           isDark: isDark,
-                          onTap: () => context
-                              .push('/event/${registrations[index].event.id}'),
+                          onTap: () => context.push('/ticket', extra: registrations[index]),
                         );
                       },
                     ),

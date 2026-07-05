@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../data/models/registration_model.dart';
 import '../../data/repositories/bookmark_repository.dart';
 import '../../data/repositories/event_repository.dart';
 import '../../data/repositories/user_repository.dart';
@@ -15,6 +16,7 @@ import '../../features/explore/views/explore_screen.dart';
 import '../../features/home/views/home_screen.dart';
 import '../../features/main_shell/views/main_shell.dart';
 import '../../features/my_event/views/my_event_screen.dart';
+import '../../features/my_event/views/ticket_detail_screen.dart';
 import '../../features/notification/views/notification_screen.dart';
 import '../../features/onboarding/views/onboarding_screen.dart';
 import '../../features/organizer/viewmodels/organizer_viewmodel.dart';
@@ -61,6 +63,15 @@ class AppRouter {
               ),
               child: EventDetailScreen(eventId: eventId),
             );
+          },
+        ),
+
+        // ── Ticket Detail ─────────────────────────
+        GoRoute(
+          path: '/ticket',
+          builder: (context, state) {
+            final registration = state.extra as RegistrationModel;
+            return TicketDetailScreen(registration: registration);
           },
         ),
 
