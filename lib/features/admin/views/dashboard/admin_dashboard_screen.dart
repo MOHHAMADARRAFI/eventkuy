@@ -9,6 +9,7 @@ import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/features/admin/settings/admin_viewmodel.dart';
 import 'package:eventkuy/data/models/user_model.dart';
+import 'package:eventkuy/data/models/event_model.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 import 'package:eventkuy/core/constants/app_colors.dart';
 import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
