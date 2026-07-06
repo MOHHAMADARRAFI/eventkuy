@@ -58,7 +58,10 @@ class TicketRepository implements ITicketRepository {
   @override
   Future<TicketModel> duplicateTicket(String ticketId) async {
     await _delay();
-    final existing = _tickets.firstWhere((t) => t.id == ticketId);
+    final existing = _tickets.firstWhere(
+      (t) => t.id == ticketId,
+      orElse: () => throw Exception('Tiket tidak ditemukan: $ticketId'),
+    );
     final duplicated = TicketModel(
       id: 'tck_${DateTime.now().millisecondsSinceEpoch}',
       eventId: existing.eventId,

@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
-import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
-import 'package:eventkuy/shared/widgets/app_button.dart';
 import 'package:eventkuy/shared/widgets/app_text_field.dart';
 
 class OrganizerParticipantsScreen extends StatefulWidget {
@@ -227,7 +225,7 @@ class _OrganizerParticipantsScreenState extends State<OrganizerParticipantsScree
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _filterStatus,
+                      initialValue: _filterStatus,
                       decoration: const InputDecoration(labelText: 'Status Bayar', contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
                       items: const [
                         DropdownMenuItem(value: 'Semua', child: Text('Semua')),
@@ -246,7 +244,7 @@ class _OrganizerParticipantsScreenState extends State<OrganizerParticipantsScree
                   const SizedBox(width: 12),
                   Expanded(
                     child: DropdownButtonFormField<String>(
-                      value: _filterCheckIn,
+                      initialValue: _filterCheckIn,
                       decoration: const InputDecoration(labelText: 'Check In', contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 4)),
                       items: const [
                         DropdownMenuItem(value: 'Semua', child: Text('Semua')),

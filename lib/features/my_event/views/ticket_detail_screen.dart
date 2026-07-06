@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
-import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/core/utils/extensions.dart';
 import 'package:eventkuy/data/models/registration_model.dart';

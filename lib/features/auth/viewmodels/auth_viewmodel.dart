@@ -115,4 +115,12 @@ class AuthViewModel extends ChangeNotifier {
     if (_state == AuthState.error) _state = AuthState.initial;
     notifyListeners();
   }
+
+  /// Inject dummy user langsung tanpa repository — untuk akun hardcoded (Admin, EO)
+  void loginWithDummyUser(UserModel dummyUser) {
+    _currentUser = dummyUser;
+    _isLoggedIn = true;
+    _activeRole = dummyUser.role;
+    _setState(AuthState.success);
+  }
 }

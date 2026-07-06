@@ -79,7 +79,10 @@ class UserRepository implements IUserRepository {
   @override
   Future<void> registerForEvent(String userId, String eventId) async {
     await _delay();
-    final event = DummyData.events.firstWhere((e) => e.id == eventId);
+    final event = DummyData.events.firstWhere(
+      (e) => e.id == eventId,
+      orElse: () => throw Exception('Event tidak ditemukan: $eventId'),
+    );
     _registrations.add(RegistrationModel(
       id: 'reg_${DateTime.now().millisecondsSinceEpoch}',
       userId: userId,

@@ -71,6 +71,7 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
                     ? null
                     : () async {
                         // Navigasi ke halaman detail
+                        final nav = Navigator.of(context);
                         final result = await Navigator.push<bool>(
                           context,
                           MaterialPageRoute(
@@ -81,7 +82,7 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
                         );
                         
                         if (result == true && mounted) {
-                           Navigator.pop(context, true);
+                           nav.pop(true);
                         }
                       },
                 style: ElevatedButton.styleFrom(
@@ -122,14 +123,14 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.indigo.withOpacity(0.05) : Colors.white,
+          color: isSelected ? Colors.indigo.withValues(alpha: 0.05) : Colors.white,
           border: Border.all(
             color: isSelected ? Colors.indigo : Colors.grey[300]!,
             width: isSelected ? 2 : 1,
           ),
           borderRadius: BorderRadius.circular(12),
           boxShadow: isSelected
-              ? [BoxShadow(color: Colors.indigo.withOpacity(0.1), blurRadius: 8)]
+              ? [BoxShadow(color: Colors.indigo.withValues(alpha: 0.1), blurRadius: 8)]
               : [],
         ),
         child: Row(
@@ -150,13 +151,12 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
                 ),
               ),
             ),
-            Radio<String>(
-              value: value,
-              groupValue: _selectedMethod,
-              onChanged: (String? val) {
-                if (val != null) _selectMethod(val);
-              },
-              activeColor: Colors.indigo,
+            Icon(
+              isSelected
+                  ? Icons.radio_button_checked_rounded
+                  : Icons.radio_button_unchecked_rounded,
+              color: isSelected ? Colors.indigo : Colors.grey[400],
+              size: 24,
             ),
           ],
         ),

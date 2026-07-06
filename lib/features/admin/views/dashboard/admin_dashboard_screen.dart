@@ -1,7 +1,6 @@
 // lib/features/admin/views/dashboard/admin_dashboard_screen.dart
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
@@ -10,6 +9,7 @@ import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/features/admin/settings/admin_viewmodel.dart';
 import 'package:eventkuy/data/models/user_model.dart';
 import 'package:eventkuy/data/models/event_model.dart';
+import 'package:eventkuy/features/auth/views/login_screen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({super.key});
@@ -27,6 +27,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     });
   }
 
+  void _logout(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -34,6 +42,23 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+      appBar: AppBar(
+        title: const Text(
+          'Dashboard Admin 🛡️',
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Keluar',
+            onPressed: () => _logout(context),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () => context.read<AdminViewModel>().loadAdminData(),
@@ -64,14 +89,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Dashboard Admin 🛡️', style: AppTypography.displaySmall),
                             Text('Pantau dan kelola seluruh sistem EventKuy', style: AppTypography.caption),
                           ],
                         ),
-                        // Log switcher trigger back to Participant if in debug
                         CircleAvatar(
-                          backgroundColor: AppColors.primaryContainer,
-                          child: const Icon(Icons.admin_panel_settings, color: AppColors.primary),
+                          backgroundColor: Colors.indigo.shade50,
+                          child: const Icon(Icons.admin_panel_settings, color: Colors.indigo),
                         ),
                       ],
                     ),

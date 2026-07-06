@@ -28,8 +28,8 @@ class _ApplyOrganizerScreenState extends State<ApplyOrganizerScreen> {
   final _bankAccNameCtrl = TextEditingController();
   
   bool _isLoading = false;
-  String? _logoUrl = 'https://picsum.photos/seed/org_logo/200/200';
-  String? _docsUrl = 'https://eventkuy.id/docs/dummy_verification_doc.pdf';
+  final String _logoUrl = 'https://picsum.photos/seed/org_logo/200/200';
+  final String _docsUrl = 'https://eventkuy.id/docs/dummy_verification_doc.pdf';
 
   @override
   void dispose() {
@@ -111,10 +111,8 @@ class _ApplyOrganizerScreenState extends State<ApplyOrganizerScreen> {
                       CircleAvatar(
                         radius: 48,
                         backgroundColor: AppColors.primaryContainer,
-                        backgroundImage: _logoUrl != null ? NetworkImage(_logoUrl!) : null,
-                        child: _logoUrl == null
-                            ? const Icon(Icons.business_rounded, size: 40, color: AppColors.primary)
-                            : null,
+                        backgroundImage: NetworkImage(_logoUrl),
+                        child: null,
                       ),
                       Positioned(
                         bottom: 0,

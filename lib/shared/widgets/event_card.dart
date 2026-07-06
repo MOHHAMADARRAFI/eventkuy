@@ -61,13 +61,13 @@ class EventCard extends StatelessWidget {
                       height: AppDimensions.eventCardImageHeight,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(
+                      placeholder: (_, _) => Container(
                         height: AppDimensions.eventCardImageHeight,
                         color: isDark
                             ? AppColors.darkSurfaceVariant
                             : AppColors.surfaceVariant,
                       ),
-                      errorWidget: (_, __, ___) => Container(
+                      errorWidget: (_, _, _) => Container(
                         height: AppDimensions.eventCardImageHeight,
                         decoration: BoxDecoration(
                           gradient: AppColors.cardGradient,
@@ -284,14 +284,14 @@ class EventListCard extends StatelessWidget {
                   width: 110,
                   height: 110,
                   fit: BoxFit.cover,
-                  placeholder: (_, __) => Container(
+                  placeholder: (_, _) => Container(
                     width: 110,
                     height: 110,
                     color: isDark
                         ? AppColors.darkSurfaceVariant
                         : AppColors.surfaceVariant,
                   ),
-                  errorWidget: (_, __, ___) => Container(
+                  errorWidget: (_, _, _) => Container(
                     width: 110,
                     height: 110,
                     decoration: BoxDecoration(

@@ -48,14 +48,14 @@ class OrganizerCard extends StatelessWidget {
                 width: 56,
                 height: 56,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => Container(
+                placeholder: (_, _) => Container(
                   width: 56,
                   height: 56,
                   color: AppColors.primaryContainer,
                   child: const Icon(Icons.business_rounded,
                       color: AppColors.primary),
                 ),
-                errorWidget: (_, __, ___) => Container(
+                errorWidget: (_, _, _) => Container(
                   width: 56,
                   height: 56,
                   decoration: const BoxDecoration(

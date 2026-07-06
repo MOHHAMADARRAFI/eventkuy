@@ -10,6 +10,7 @@ import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
 import 'package:eventkuy/data/models/payment_model.dart';
 import 'package:eventkuy/features/organizer/dashboard/organizer_dashboard_viewmodel.dart';
+import 'package:eventkuy/features/auth/views/login_screen.dart';
 
 class OrganizerDashboardScreen extends StatefulWidget {
   const OrganizerDashboardScreen({super.key});
@@ -28,6 +29,14 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
     });
   }
 
+  void _logout() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -35,6 +44,23 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+      appBar: AppBar(
+        title: const Text(
+          'EO Dashboard 🏟️',
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Keluar',
+            onPressed: _logout,
+          ),
+        ],
+      ),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {
@@ -45,6 +71,34 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
             builder: (context, vm, _) {
               if (vm.isLoading) {
                 return const Center(child: CircularProgressIndicator());
+              }
+
+              if (vm.errorMessage != null) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.warning_amber_rounded, size: 48, color: Colors.orange),
+                        const SizedBox(height: 12),
+                        Text('Gagal memuat data dashboard', style: AppTypography.titleMedium),
+                        const SizedBox(height: 8),
+                        Text(vm.errorMessage!, style: AppTypography.caption, textAlign: TextAlign.center),
+                        const SizedBox(height: 20),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(backgroundColor: Colors.indigo),
+                          onPressed: () {
+                            final orgId = context.read<AuthViewModel>().currentUser?.id ?? 'org_001';
+                            context.read<OrganizerDashboardViewModel>().loadDashboardData(orgId);
+                          },
+                          icon: const Icon(Icons.refresh, color: Colors.white),
+                          label: const Text('Coba Lagi', style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               }
 
               return SingleChildScrollView(
@@ -87,13 +141,19 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
 
   Widget _buildHeader(BuildContext context) {
     final user = context.watch<AuthViewModel>().currentUser;
+    final initial = (user?.name.isNotEmpty == true) ? user!.name[0].toUpperCase() : 'O';
+    final hasPhoto = user?.photoUrl != null && (user?.photoUrl?.isNotEmpty ?? false);
     return Row(
       children: [
         CircleAvatar(
           radius: 24,
-          backgroundImage: user?.photoUrl != null ? NetworkImage(user!.photoUrl!) : null,
-          child: user?.photoUrl == null
-              ? Text(user?.name[0].toUpperCase() ?? 'O', style: const TextStyle(fontWeight: FontWeight.bold))
+          backgroundColor: Colors.indigo.shade100,
+          backgroundImage: hasPhoto ? NetworkImage(user!.photoUrl!) : null,
+          child: !hasPhoto
+              ? Text(
+                  initial,
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.indigo),
+                )
               : null,
         ),
         const SizedBox(width: 12),
@@ -106,7 +166,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
         ),
         const Spacer(),
         IconButton(
-          icon: const Icon(Icons.notifications_outlined),
+          icon: const Icon(Icons.notifications_outlined, color: Colors.indigo),
           onPressed: () => context.push('/notification'),
         ),
       ],
@@ -124,7 +184,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
                 title: 'Total Event',
                 value: '${vm.totalEvents}',
                 icon: Icons.event_rounded,
-                color: AppColors.primary,
+                color: Colors.indigo,
                 isDark: isDark,
               ),
             ),
@@ -309,7 +369,7 @@ class _OrganizerDashboardScreenState extends State<OrganizerDashboardScreen> {
               color: isDark ? AppColors.darkSurfaceVariant : AppColors.primaryContainer,
               borderRadius: BorderRadius.circular(16),
             ),
-            child: Icon(icon, color: AppColors.primary, size: 24),
+            child: Icon(icon, color: Colors.indigo, size: 24),
           ),
           const SizedBox(height: 8),
           Text(label, style: AppTypography.caption.copyWith(fontWeight: FontWeight.w600)),
@@ -402,7 +462,7 @@ class LineChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (data.isEmpty) return;
+    if (data.isEmpty || data.length < 2) return;
 
     final paintLine = Paint()
       ..color = color
@@ -459,7 +519,7 @@ class LineChartPainter extends CustomPainter {
     final gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [color.withOpacity(0.3), color.withOpacity(0.0)],
+      colors: [color.withValues(alpha: 0.3), color.withValues(alpha: 0.0)],
     );
     paintFill.shader = gradient.createShader(Rect.fromLTRB(0, 0, size.width, size.height));
     canvas.drawPath(fillPath, paintFill);

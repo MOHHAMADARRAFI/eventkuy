@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
-import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/shared/widgets/app_button.dart';
 
@@ -132,7 +131,7 @@ class _OrganizerScannerScreenState extends State<OrganizerScannerScreen> with Si
                               color: AppColors.primary,
                               boxShadow: [
                                 BoxShadow(
-                                  color: AppColors.primary.withOpacity(0.8),
+                                  color: AppColors.primary.withValues(alpha: 0.8),
                                   blurRadius: 10,
                                   spreadRadius: 2,
                                 )
@@ -170,7 +169,7 @@ class _OrganizerScannerScreenState extends State<OrganizerScannerScreen> with Si
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: isDark ? AppColors.darkSurface : Colors.white.withOpacity(0.9),
+                color: isDark ? AppColors.darkSurface : Colors.white.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(

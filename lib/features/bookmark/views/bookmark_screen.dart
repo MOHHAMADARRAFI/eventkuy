@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
-import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_strings.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/features/auth/viewmodels/auth_viewmodel.dart';
@@ -71,7 +70,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                     child: ListView.separated(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
                       itemCount: vm.bookmarks.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
                       itemBuilder: (context, index) {
                         final bookmark = vm.bookmarks[index];
                         final event = bookmark.event;

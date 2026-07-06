@@ -108,7 +108,10 @@ class EventRepository implements IEventRepository {
   Future<EventModel?> getEventById(String id) async {
     await _delay();
     try {
-      return DummyData.events.firstWhere((e) => e.id == id);
+      return DummyData.events.firstWhere(
+        (e) => e.id == id,
+        orElse: () => throw Exception('Event tidak ditemukan: $id'),
+      );
     } catch (_) {
       return null;
     }

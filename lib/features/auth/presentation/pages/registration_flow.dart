@@ -115,7 +115,7 @@ class _RoleSelectionScreenState extends State<RoleSelectionScreen> {
             width: isSelected ? 2 : 1,
           ),
           boxShadow: isSelected
-              ? [BoxShadow(color: Colors.indigo.withOpacity(0.1), blurRadius: 10, spreadRadius: 2)]
+              ? [BoxShadow(color: Colors.indigo.withValues(alpha: 0.1), blurRadius: 10, spreadRadius: 2)]
               : [],
         ),
         child: Row(
@@ -454,6 +454,8 @@ class _EODashboardState extends State<EODashboard> {
         return _EventFormSheet(
           eventToEdit: eventToEdit,
           onSave: (Map<String, dynamic> newEvent) async {
+            final nav = Navigator.of(context);
+            final messenger = ScaffoldMessenger.of(context);
             if (eventToEdit == null) {
               await DatabaseHelper().insertEvent(newEvent);
             } else {
@@ -462,9 +464,9 @@ class _EODashboardState extends State<EODashboard> {
             }
             
             _loadEvents(); // Refresh data
-            Navigator.pop(context);
+            nav.pop();
             
-            ScaffoldMessenger.of(context).showSnackBar(
+            messenger.showSnackBar(
               SnackBar(
                 content: Text(eventToEdit == null ? 'Event berhasil ditambahkan!' : 'Event berhasil diperbarui!'),
                 backgroundColor: Colors.green,
@@ -605,7 +607,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
   String _jenis = 'Offline';
   bool _bannerUploaded = false;
   
-  Map<String, bool> _benefits = {
+  final Map<String, bool> _benefits = {
     'E-Sertifikat': false,
     'Konsumsi': false,
     'Merchandise': false,
@@ -760,7 +762,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _kategori,
+                  initialValue: _kategori,
                   decoration: _inputDecoration('Kategori Event'),
                   items: _kategoriOptions.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
                   onChanged: (val) => setState(() => _kategori = val!),
@@ -792,23 +794,27 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                 Row(
                   children: [
                     Expanded(
-                      child: RadioListTile<String>(
+                      child: ListTile(
+                        leading: Icon(
+                          _jenis == 'Offline' ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
+                          color: _jenis == 'Offline' ? Colors.amber : Colors.grey,
+                          size: 20,
+                        ),
                         title: const Text('Offline', style: TextStyle(fontSize: 14)),
-                        value: 'Offline',
-                        groupValue: _jenis,
-                        activeColor: Colors.amber,
                         contentPadding: EdgeInsets.zero,
-                        onChanged: (val) => setState(() => _jenis = val!),
+                        onTap: () => setState(() => _jenis = 'Offline'),
                       ),
                     ),
                     Expanded(
-                      child: RadioListTile<String>(
+                      child: ListTile(
+                        leading: Icon(
+                          _jenis == 'Online' ? Icons.radio_button_checked_rounded : Icons.radio_button_unchecked_rounded,
+                          color: _jenis == 'Online' ? Colors.amber : Colors.grey,
+                          size: 20,
+                        ),
                         title: const Text('Online', style: TextStyle(fontSize: 14)),
-                        value: 'Online',
-                        groupValue: _jenis,
-                        activeColor: Colors.amber,
                         contentPadding: EdgeInsets.zero,
-                        onChanged: (val) => setState(() => _jenis = val!),
+                        onTap: () => setState(() => _jenis = 'Online'),
                       ),
                     ),
                   ],
@@ -849,7 +855,7 @@ class _EventFormSheetState extends State<_EventFormSheet> {
                       });
                     },
                   );
-                }).toList(),
+                }),
                 
                 const SizedBox(height: 32),
                 SizedBox(

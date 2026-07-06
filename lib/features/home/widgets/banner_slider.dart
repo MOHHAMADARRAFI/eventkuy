@@ -95,12 +95,12 @@ class _BannerItem extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: event.posterUrl,
                 fit: BoxFit.cover,
-                placeholder: (_, __) => Container(
+                placeholder: (context, url) => Container(
                   decoration: const BoxDecoration(
                     gradient: AppColors.cardGradient,
                   ),
                 ),
-                errorWidget: (_, __, ___) => Container(
+                errorWidget: (context, url, error) => Container(
                   decoration: const BoxDecoration(
                     gradient: AppColors.cardGradient,
                   ),

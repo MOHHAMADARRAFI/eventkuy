@@ -44,7 +44,7 @@ class RecommendedSection extends StatelessWidget {
               horizontal: AppDimensions.screenPaddingH,
             ),
             itemCount: events.take(6).length,
-            separatorBuilder: (_, __) => const SizedBox(width: 14),
+            separatorBuilder: (_, _) => const SizedBox(width: 14),
             itemBuilder: (context, index) {
               final event = events[index];
               return EventCard(

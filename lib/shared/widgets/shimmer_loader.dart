@@ -141,8 +141,8 @@ class HorizontalShimmerList extends StatelessWidget {
           horizontal: AppDimensions.screenPaddingH,
         ),
         itemCount: count,
-        separatorBuilder: (_, __) => const SizedBox(width: 16),
-        itemBuilder: (_, __) => EventCardShimmer(),
+        separatorBuilder: (_, _) => const SizedBox(width: 16),
+        itemBuilder: (_, _) => EventCardShimmer(),
       ),
     );
   }
@@ -164,8 +164,8 @@ class ListShimmer extends StatelessWidget {
         horizontal: AppDimensions.screenPaddingH,
       ),
       itemCount: count,
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
-      itemBuilder: (_, __) => Shimmer.fromColors(
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      itemBuilder: (_, _) => Shimmer.fromColors(
         baseColor: isDark ? AppColors.shimmerBaseDark : AppColors.shimmerBase,
         highlightColor: isDark
             ? AppColors.shimmerHighlightDark

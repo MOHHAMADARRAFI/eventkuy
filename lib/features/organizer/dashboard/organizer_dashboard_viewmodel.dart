@@ -14,6 +14,8 @@ class OrganizerDashboardViewModel extends ChangeNotifier {
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  String? _errorMessage;
+  String? get errorMessage => _errorMessage;
 
   int _totalEvents = 0;
   int _activeEvents = 0;
@@ -41,6 +43,7 @@ class OrganizerDashboardViewModel extends ChangeNotifier {
 
   Future<void> loadDashboardData(String organizerId) async {
     _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try {
@@ -93,6 +96,7 @@ class OrganizerDashboardViewModel extends ChangeNotifier {
       _recentPayments = allPayments.take(5).toList();
 
     } catch (e) {
+      _errorMessage = e.toString();
       debugPrint('Error loading organizer dashboard data: $e');
     }
 

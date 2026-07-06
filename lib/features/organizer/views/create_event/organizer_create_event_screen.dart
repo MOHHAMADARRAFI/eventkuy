@@ -231,7 +231,7 @@ class _OrganizerCreateEventScreenState extends State<OrganizerCreateEventScreen>
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<EventType>(
-                        value: _selectedType,
+                        initialValue: _selectedType,
                         decoration: const InputDecoration(labelText: 'Tipe Event'),
                         items: EventType.values
                             .map((t) => DropdownMenuItem(value: t, child: Text(t.name.toUpperCase())))
@@ -244,7 +244,7 @@ class _OrganizerCreateEventScreenState extends State<OrganizerCreateEventScreen>
                     const SizedBox(width: 16),
                     Expanded(
                       child: DropdownButtonFormField<EventMode>(
-                        value: _selectedMode,
+                        initialValue: _selectedMode,
                         decoration: const InputDecoration(labelText: 'Mode Event'),
                         items: EventMode.values
                             .map((m) => DropdownMenuItem(value: m, child: Text(m.name.toUpperCase())))
@@ -390,7 +390,7 @@ class _OrganizerCreateEventScreenState extends State<OrganizerCreateEventScreen>
                   subtitle: const Text('Kirim sertifikat otomatis setelah event selesai'),
                   value: _certAvailable,
                   onChanged: (val) => setState(() => _certAvailable = val),
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                 ),
                 const SizedBox(height: 12),
                 AppTextField(

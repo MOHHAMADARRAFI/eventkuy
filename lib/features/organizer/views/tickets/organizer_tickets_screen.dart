@@ -7,7 +7,6 @@ import 'package:eventkuy/core/constants/app_colors.dart';
 import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/data/models/ticket_model.dart';
-import 'package:eventkuy/shared/widgets/app_button.dart';
 import 'package:eventkuy/shared/widgets/app_text_field.dart';
 import 'package:eventkuy/features/organizer/tickets/organizer_tickets_viewmodel.dart';
 
@@ -180,7 +179,7 @@ class _OrganizerTicketsScreenState extends State<OrganizerTicketsScreen> {
               Switch(
                 value: t.isActive,
                 onChanged: (val) => vm.toggleTicketStatus(t.id, val, widget.eventId),
-                activeColor: AppColors.primary,
+                activeThumbColor: AppColors.primary,
               ),
             ],
           ),
@@ -285,7 +284,7 @@ class _OrganizerTicketsScreenState extends State<OrganizerTicketsScreen> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: color,
+                    initialValue: color,
                     decoration: const InputDecoration(labelText: 'Label Warna'),
                     items: const [
                       DropdownMenuItem(value: 'blue', child: Text('Biru')),

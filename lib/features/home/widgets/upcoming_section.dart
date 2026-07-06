@@ -6,7 +6,6 @@ import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_strings.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/data/models/event_model.dart';
-import 'package:eventkuy/shared/widgets/event_card.dart';
 import 'package:eventkuy/shared/widgets/section_header.dart';
 
 class UpcomingSection extends StatelessWidget {
@@ -46,7 +45,7 @@ class UpcomingSection extends StatelessWidget {
             horizontal: AppDimensions.screenPaddingH,
           ),
           itemCount: events.take(4).length,
-          separatorBuilder: (_, __) => const SizedBox(height: 12),
+          separatorBuilder: (_, _) => const SizedBox(height: 12),
           itemBuilder: (context, index) {
             final event = events[index];
             return _UpcomingCard(

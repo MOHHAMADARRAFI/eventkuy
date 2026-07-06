@@ -28,7 +28,7 @@ class CategoryList extends StatelessWidget {
           horizontal: AppDimensions.screenPaddingH,
         ),
         itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
         itemBuilder: (context, index) {
           final cat = categories[index];
           final isSelected = selectedId == cat.id;

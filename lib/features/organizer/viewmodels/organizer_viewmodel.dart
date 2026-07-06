@@ -31,7 +31,10 @@ class OrganizerViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _organizer = DummyData.organizers.firstWhere((o) => o.id == organizerId);
+      _organizer = DummyData.organizers.firstWhere(
+        (o) => o.id == organizerId,
+        orElse: () => throw Exception('Organizer tidak ditemukan: $organizerId'),
+      );
       _events = await _eventRepo.getEventsByOrganizer(organizerId);
       _state = OrganizerState.success;
     } catch (e) {

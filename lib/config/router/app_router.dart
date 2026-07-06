@@ -119,7 +119,7 @@ class AppRouter {
 
         // ── Organizer (participant view of another organizer) ─────
         GoRoute(
-          path: '/organizer/:id',
+          path: '/organizer-profile/:id',
           builder: (context, state) {
             final organizerId = state.pathParameters['id']!;
             return ChangeNotifierProvider(
@@ -173,8 +173,7 @@ class AppRouter {
         GoRoute(
           path: '/organizer/edit-event/:id',
           builder: (context, state) {
-            final id = state.pathParameters['id']!;
-            // For mock demo, we pass it into standard create screen acting as edit screen
+            // id available via state.pathParameters['id'] when real API is integrated
             return const OrganizerCreateEventScreen();
           },
         ),

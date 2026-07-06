@@ -13,6 +13,7 @@ import 'package:eventkuy/data/dummy/dummy_data.dart';
 
 class AdminViewModel extends ChangeNotifier {
   final EventRepository _eventRepo;
+  // ignore: unused_field
   final UserRepository _userRepo;
   final IAuditRepository _auditRepo;
 

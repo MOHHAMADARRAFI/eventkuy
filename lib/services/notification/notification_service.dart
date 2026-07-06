@@ -43,11 +43,7 @@ class NotificationService {
     // TODO: Cancel scheduled notification by eventId
   }
 
-  void _handleForegroundMessage(dynamic message) {
-    // TODO: Handle foreground push notification
-  }
-
-  void _handleBackgroundMessage(dynamic message) {
-    // TODO: Handle background push notification tap
-  }
+  // TODO: Connect handlers when push notification is implemented
+  // void _handleForegroundMessage(dynamic message) { ... }
+  // void _handleBackgroundMessage(dynamic message) { ... }
 }

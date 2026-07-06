@@ -260,12 +260,12 @@ class _EventDetailBody extends StatelessWidget {
                     child: CachedNetworkImage(
                       imageUrl: event.posterUrl,
                       fit: BoxFit.cover,
-                      placeholder: (_, __) => Container(
+                      placeholder: (context, url) => Container(
                         decoration: const BoxDecoration(
                           gradient: AppColors.cardGradient,
                         ),
                       ),
-                      errorWidget: (_, __, ___) => Container(
+                      errorWidget: (context, url, error) => Container(
                         decoration: const BoxDecoration(
                           gradient: AppColors.cardGradient,
                         ),
@@ -529,7 +529,7 @@ class _DetailContent extends StatelessWidget {
                             width: 48,
                             height: 48,
                             fit: BoxFit.cover,
-                            errorWidget: (_, __, ___) => Container(
+                            errorWidget: (context, url, error) => Container(
                               width: 48,
                               height: 48,
                               color: AppColors.primaryContainer,
@@ -710,7 +710,7 @@ class _OrganizerRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final org = event.organizer;
     return GestureDetector(
-      onTap: () => context.push('/organizer/${org.id}'),
+      onTap: () => context.push('/organizer-profile/${org.id}'),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
@@ -729,7 +729,7 @@ class _OrganizerRow extends StatelessWidget {
                 width: 44,
                 height: 44,
                 fit: BoxFit.cover,
-                errorWidget: (_, __, ___) => Container(
+                errorWidget: (context, url, error) => Container(
                   width: 44,
                   height: 44,
                   color: AppColors.primaryContainer,
@@ -839,7 +839,7 @@ class _TicketSelectionSheetState extends State<_TicketSelectionSheet> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: isSel
-                          ? AppColors.primary.withOpacity(0.05)
+                          ? AppColors.primary.withValues(alpha: 0.05)
                           : (widget.isDark ? AppColors.darkSurface : AppColors.surface),
                       border: Border.all(
                         color: isSel ? AppColors.primary : (widget.isDark ? AppColors.darkBorder : AppColors.border),

@@ -164,10 +164,10 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.indigo.withOpacity(0.3), width: 2),
+            border: Border.all(color: Colors.indigo.withValues(alpha: 0.3), width: 2),
             boxShadow: [
               BoxShadow(
-                color: Colors.indigo.withOpacity(0.08),
+                color: Colors.indigo.withValues(alpha: 0.08),
                 blurRadius: 20,
                 spreadRadius: 5,
               )
@@ -342,7 +342,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
         border: Border.all(color: Colors.grey[200]!),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
+            color: Colors.grey.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
@@ -371,7 +371,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                     width: 24,
                     height: 24,
                     decoration: BoxDecoration(
-                      color: Colors.indigo.withOpacity(0.1),
+                      color: Colors.indigo.withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -398,7 +398,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                 ],
               ),
             );
-          }).toList(),
+          }),
         ],
       ),
     );

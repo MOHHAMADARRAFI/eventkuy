@@ -75,7 +75,7 @@ class _AdminNotificationsScreenState extends State<AdminNotificationsScreen> {
                 const SizedBox(height: 24),
 
                 DropdownButtonFormField<String>(
-                  value: _targetAudience,
+                  initialValue: _targetAudience,
                   decoration: const InputDecoration(labelText: 'Target Audiens'),
                   items: const [
                     DropdownMenuItem(value: 'Semua', child: Text('Semua Pengguna')),

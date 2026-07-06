@@ -56,7 +56,7 @@ class OrganizerEventDetailScreen extends StatelessWidget {
                   background: CachedNetworkImage(
                     imageUrl: event.posterUrl,
                     fit: BoxFit.cover,
-                    errorWidget: (_, __, ___) => Container(color: AppColors.primaryContainer),
+                    errorWidget: (_, _, _) => Container(color: AppColors.primaryContainer),
                   ),
                 ),
                 actions: [
@@ -79,7 +79,7 @@ class OrganizerEventDetailScreen extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
-                              color: event.status.color.withOpacity(0.2),
+                              color: event.status.color.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(

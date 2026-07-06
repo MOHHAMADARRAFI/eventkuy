@@ -19,6 +19,8 @@ class OrganizerProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = context.watch<AuthViewModel>().currentUser;
+    final initial = (user?.name.isNotEmpty == true) ? user!.name[0].toUpperCase() : 'O';
+    final hasOrgLogo = user?.organizationLogo != null && (user?.organizationLogo?.isNotEmpty ?? false);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
@@ -38,9 +40,9 @@ class OrganizerProfileScreen extends StatelessWidget {
                     CircleAvatar(
                       radius: 36,
                       backgroundColor: Colors.white24,
-                      backgroundImage: user?.organizationLogo != null ? NetworkImage(user!.organizationLogo!) : null,
-                      child: user?.organizationLogo == null
-                          ? Text(user?.name[0].toUpperCase() ?? 'O', style: const TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold))
+                      backgroundImage: hasOrgLogo ? NetworkImage(user!.organizationLogo!) : null,
+                      child: !hasOrgLogo
+                          ? Text(initial, style: const TextStyle(fontSize: 24, color: Colors.white, fontWeight: FontWeight.bold))
                           : null,
                     ),
                     const SizedBox(width: 16),
@@ -126,6 +128,8 @@ class OrganizerProfileScreen extends StatelessWidget {
                     AppSecondaryButton(
                       label: 'Keluar Akun',
                       onTap: () async {
+                        final authVM = context.read<AuthViewModel>();
+                        final router = GoRouter.of(context);
                         final confirmed = await showConfirmDialog(
                           context,
                           title: 'Keluar',
@@ -133,9 +137,9 @@ class OrganizerProfileScreen extends StatelessWidget {
                           confirmLabel: 'Keluar',
                           confirmColor: AppColors.error,
                         );
-                        if (confirmed == true && context.mounted) {
-                          await context.read<AuthViewModel>().logout();
-                          context.go('/login');
+                        if (confirmed == true) {
+                          await authVM.logout();
+                          router.go('/login');
                         }
                       },
                     ),

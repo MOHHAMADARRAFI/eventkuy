@@ -11,7 +11,6 @@ import 'package:eventkuy/features/bookmark/viewmodels/bookmark_viewmodel.dart';
 import 'package:eventkuy/shared/widgets/app_button.dart';
 import 'package:eventkuy/shared/widgets/empty_state_widget.dart';
 import 'package:eventkuy/shared/widgets/event_card.dart';
-import 'package:eventkuy/shared/widgets/shimmer_loader.dart';
 import 'package:eventkuy/features/organizer/viewmodels/organizer_viewmodel.dart';
 
 class OrganizerScreen extends StatefulWidget {
@@ -110,7 +109,7 @@ class _OrganizerScreenState extends State<OrganizerScreen> {
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,
-                            errorWidget: (_, __, ___) => Container(
+                            errorWidget: (_, _, _) => Container(
                               width: 80,
                               height: 80,
                               color: AppColors.primaryContainer,

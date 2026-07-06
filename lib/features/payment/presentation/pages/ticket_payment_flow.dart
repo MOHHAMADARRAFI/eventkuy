@@ -239,30 +239,28 @@ class _PaymentSelectionScreenState extends State<PaymentSelectionScreen> {
               ),
               child: Column(
                 children: [
-                  RadioListTile<String>(
+                  ListTile(
+                    leading: Icon(
+                      _selectedMethod == 'QRIS'
+                          ? Icons.radio_button_checked_rounded
+                          : Icons.radio_button_unchecked_rounded,
+                      color: _selectedMethod == 'QRIS' ? Colors.indigo : Colors.grey,
+                    ),
                     title: const Text('QRIS (Gopay, OVO, Dana)', style: TextStyle(fontWeight: FontWeight.w500)),
-                    value: 'QRIS',
-                    groupValue: _selectedMethod,
-                    activeColor: Colors.indigo,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedMethod = value!;
-                      });
-                    },
+                    onTap: () => setState(() => _selectedMethod = 'QRIS'),
                   ),
                   const Divider(height: 1, indent: 16, endIndent: 16),
-                  RadioListTile<String>(
+                  ListTile(
+                    leading: Icon(
+                      _selectedMethod == 'VA'
+                          ? Icons.radio_button_checked_rounded
+                          : Icons.radio_button_unchecked_rounded,
+                      color: _selectedMethod == 'VA' ? Colors.indigo : Colors.grey,
+                    ),
                     title: const Text('Transfer Bank (Virtual Account)', style: TextStyle(fontWeight: FontWeight.w500)),
-                    value: 'VA',
-                    groupValue: _selectedMethod,
-                    activeColor: Colors.indigo,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedMethod = value!;
-                      });
-                    },
+                    onTap: () => setState(() => _selectedMethod = 'VA'),
                   ),
                 ],
               ),
@@ -450,7 +448,7 @@ class _PaymentDetailScreenState extends State<PaymentDetailScreen> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   boxShadow: [
-                    BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, spreadRadius: 2),
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, spreadRadius: 2),
                   ],
                 ),
                 child: const Center(

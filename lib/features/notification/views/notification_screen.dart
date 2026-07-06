@@ -91,7 +91,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     child: ListView.separated(
                       padding: const EdgeInsets.fromLTRB(20, 8, 20, 100),
                       itemCount: vm.notifications.length,
-                      separatorBuilder: (_, __) => const Divider(
+                      separatorBuilder: (_, _) => const Divider(
                         height: 1,
                         color: AppColors.divider,
                       ),

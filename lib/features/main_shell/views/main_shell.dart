@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:eventkuy/core/constants/app_colors.dart';
 import 'package:eventkuy/core/constants/app_strings.dart';
 import 'package:eventkuy/features/notification/viewmodels/notification_viewmodel.dart';
+import 'package:eventkuy/features/auth/views/login_screen.dart';
 
 class MainShell extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
@@ -20,6 +21,14 @@ class MainShell extends StatelessWidget {
     );
   }
 
+  void _logout(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginScreen()),
+      (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -27,6 +36,23 @@ class MainShell extends StatelessWidget {
         context.watch<NotificationViewModel>().unreadCount;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'EventKuy 🎉',
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+        ),
+        backgroundColor: Colors.indigo,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout, color: Colors.white),
+            tooltip: 'Keluar',
+            onPressed: () => _logout(context),
+          ),
+        ],
+      ),
       body: navigationShell,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

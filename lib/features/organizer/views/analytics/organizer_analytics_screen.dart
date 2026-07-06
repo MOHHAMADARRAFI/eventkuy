@@ -174,7 +174,7 @@ class MiniAreaChartPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    if (data.isEmpty) return;
+    if (data.isEmpty || data.length < 2) return;
 
     final paintLine = Paint()
       ..color = color
@@ -226,7 +226,7 @@ class MiniAreaChartPainter extends CustomPainter {
     final gradient = LinearGradient(
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
-      colors: [color.withOpacity(0.3), color.withOpacity(0.0)],
+      colors: [color.withValues(alpha: 0.3), color.withValues(alpha: 0.0)],
     );
     paintFill.shader = gradient.createShader(Rect.fromLTRB(0, 0, size.width, size.height));
 

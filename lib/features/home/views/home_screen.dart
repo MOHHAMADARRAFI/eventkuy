@@ -313,7 +313,7 @@ class _HomeContent extends StatelessWidget {
         // Popular Organizers
         PopularOrganizerSection(
           organizers: vm.popularOrganizers,
-          onTap: (org) => context.push('/organizer/${org.id}'),
+          onTap: (org) => context.push('/organizer-profile/${org.id}'),
         ),
       ],
     );

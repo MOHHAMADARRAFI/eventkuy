@@ -83,6 +83,8 @@ class AdminSettingsScreen extends StatelessWidget {
               AppSecondaryButton(
                 label: 'Keluar Admin Panel',
                 onTap: () async {
+                  final authVM = context.read<AuthViewModel>();
+                  final router = GoRouter.of(context);
                   final confirmed = await showConfirmDialog(
                     context,
                     title: 'Keluar',
@@ -90,9 +92,9 @@ class AdminSettingsScreen extends StatelessWidget {
                     confirmLabel: 'Keluar',
                     confirmColor: AppColors.error,
                   );
-                  if (confirmed == true && context.mounted) {
-                    await context.read<AuthViewModel>().logout();
-                    context.go('/login');
+                  if (confirmed == true) {
+                    await authVM.logout();
+                    router.go('/login');
                   }
                 },
               ),

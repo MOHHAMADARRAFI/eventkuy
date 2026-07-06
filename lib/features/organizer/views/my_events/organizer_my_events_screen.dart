@@ -179,7 +179,7 @@ class _OrganizerMyEventsScreenState extends State<OrganizerMyEventsScreen> with 
                   height: 140,
                   width: double.infinity,
                   fit: BoxFit.cover,
-                  errorWidget: (_, __, ___) => Container(color: AppColors.primaryContainer, height: 140),
+                  errorWidget: (_, _, _) => Container(color: AppColors.primaryContainer, height: 140),
                 ),
               ),
               Positioned(

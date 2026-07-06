@@ -34,7 +34,7 @@ class PopularOrganizerSection extends StatelessWidget {
               horizontal: AppDimensions.screenPaddingH,
             ),
             itemCount: organizers.length,
-            separatorBuilder: (_, __) => const SizedBox(width: 12),
+            separatorBuilder: (_, _) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
               final organizer = organizers[index];
               return OrganizerCard(

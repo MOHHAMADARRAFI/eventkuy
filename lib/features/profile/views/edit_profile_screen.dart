@@ -87,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 child: Stack(
                   children: [
                     Consumer<AuthViewModel>(
-                      builder: (_, vm, __) => CircleAvatar(
+                    builder: (_, vm, _) => CircleAvatar(
                         radius: 48,
                         backgroundColor: AppColors.primaryContainer,
                         child: Text(
@@ -160,7 +160,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               const SizedBox(height: AppDimensions.xxxl),
 
               Consumer<AuthViewModel>(
-                builder: (_, vm, __) => AppPrimaryButton(
+                builder: (_, vm, _) => AppPrimaryButton(
                   label: 'Simpan Perubahan',
                   onTap: _save,
                   isLoading: vm.isLoading,

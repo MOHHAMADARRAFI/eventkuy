@@ -104,6 +104,8 @@ class ProfileScreen extends StatelessWidget {
                     AppSecondaryButton(
                       label: AppStrings.logout,
                       onTap: () async {
+                        final authVM = context.read<AuthViewModel>();
+                        final router = GoRouter.of(context);
                         final confirmed = await showConfirmDialog(
                           context,
                           title: AppStrings.logout,
@@ -112,9 +114,9 @@ class ProfileScreen extends StatelessWidget {
                           confirmColor: AppColors.error,
                           icon: Icons.logout_rounded,
                         );
-                        if (confirmed == true && context.mounted) {
-                          await context.read<AuthViewModel>().logout();
-                          context.go('/login');
+                        if (confirmed == true) {
+                          await authVM.logout();
+                          router.go('/login');
                         }
                       },
                     ),
@@ -200,10 +202,10 @@ class _ProfileHeader extends StatelessWidget {
               CircleAvatar(
                 radius: 44,
                 backgroundColor: Colors.white.withAlpha(30),
-                child: user?.avatarUrl != null
+                child: user?.photoUrl != null
                     ? ClipOval(
                         child: CachedNetworkImage(
-                          imageUrl: user!.avatarUrl!,
+                          imageUrl: user!.photoUrl!,
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,

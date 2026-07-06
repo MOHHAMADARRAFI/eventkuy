@@ -9,7 +9,6 @@ import 'package:eventkuy/core/constants/app_dimensions.dart';
 import 'package:eventkuy/core/constants/app_strings.dart';
 import 'package:eventkuy/core/constants/app_typography.dart';
 import 'package:eventkuy/services/storage/local_storage.dart';
-import 'package:eventkuy/shared/widgets/app_button.dart';
 
 class _OnboardingPage {
   final String title;

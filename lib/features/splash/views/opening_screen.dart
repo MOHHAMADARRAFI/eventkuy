@@ -45,14 +45,14 @@ class OpeningScreen extends StatelessWidget {
                                 padding: const EdgeInsets.all(28),
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
-                                  color: Colors.white.withOpacity(0.15),
+                                  color: Colors.white.withValues(alpha: 0.15),
                                   border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
+                                    color: Colors.white.withValues(alpha: 0.3),
                                     width: 2,
                                   ),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.indigo.shade900.withOpacity(0.5),
+                                      color: Colors.indigo.shade900.withValues(alpha: 0.5),
                                       blurRadius: 40,
                                       offset: const Offset(0, 15),
                                     ),
@@ -84,7 +84,7 @@ class OpeningScreen extends StatelessWidget {
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   fontSize: 16,
-                                  color: Colors.white.withOpacity(0.85),
+                                  color: Colors.white.withValues(alpha: 0.85),
                                   height: 1.5,
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.5,
